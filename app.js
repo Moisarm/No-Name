@@ -35,6 +35,11 @@ io.sockets.on("connection", function (socket) {
   socket.emit("serverMsg", {
     msg: "Esto es un mensaje enviado desde el servidor",
   });
+
+  //esta funcion se activa con un evento emitido por el cliente (click en el boton)
+  socket.on("funcion", function (data) {
+    console.log(`${data.dato}`);
+  });
 });
 
 module.exports = app;

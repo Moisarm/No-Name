@@ -12,18 +12,27 @@
     </style>
 </head>
 <body>
-    
+    <button onclick="emitir()" style="color: blueviolet;">Accion</button>
 </body>
 <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
       socket.emit("XD",{
         info:"Esto es un objeto, se obtiene a del parametro  de la funcion socket.on(data)", 
-
       })
+      
+      //Tambien se puede hacer una funcion expresada para poder emitir informacion con un evento específico
+      let emitir= function(){
+        socket.emit("funcion",{
+            dato:"Esto se obtuvo al hacer click al boton"
+        })
+  
+      }
 
       socket.on("serverMsg",function(data){
         console.log(data.msg);
       })
+
+      
     </script>
 </html>
