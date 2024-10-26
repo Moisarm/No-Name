@@ -73,13 +73,13 @@ io.sockets.on("connection", function (socket) {
 
   socket.on("keyPress", function (data) {
     if (data.inputId === "left") {
-      playerList[socket.id].pressingLeft = data.state;
+      Player.pressingLeft = data.state;
     } else if (data.inputId === "right") {
-      playerList[socket.id].pressingRight = data.state;
+      Player.pressingRight = data.state;
     } else if (data.inputId === "up") {
-      playerList[socket.id].pressingUp = data.state;
+      Player.pressingUp = data.state;
     } else if (data.inputId === "down") {
-      playerList[socket.id].pressingDown = data.state;
+      Player.pressingDown = data.state;
     }
   });
   console.log(`socket connection ${socket.id}`);
