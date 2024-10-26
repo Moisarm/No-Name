@@ -34,33 +34,25 @@ io.sockets.on("connection", function (socket) {
   socketList[socket.id] = socket;
 
   console.log("socket connection");
-
-  /*Sigue siendo listening de lo que envia el cliente, aunque se usa un emit*/
-  socket.on("XD", function (data) {
-    console.log(`Oye ${data.info}`);
-  });
-
-  /*Para emitir mensajes se  utiliza el metodo emit y como en el listening se pasa un nombre de evento, el cual se utiliza para identificar el socket que se quiere notificar*/
-  socket.emit("serverMsg", {
-    msg: "Esto es un mensaje enviado desde el servidor",
-  });
-
-  //esta funcion se activa con un evento emitido por el cliente (click en el boton)
-  socket.on("funcion", function (data) {
-    console.log(`${data.dato}`);
-  });
 });
 
 setInterval(function () {
+  let pack = []; //Contiene la informacion de todos los jugadores
+
   for (let i in socketList) {
     let socket = socketList[i];
     socket.x++;
     socket.y++;
-
-    socket.emit("newPosition", {
+    pack.push({
       x: socket.x,
       y: socket.y,
     });
   }
+
+  for (let i in socketList) {
+    let socket = socketList[i];
+    socket.emit("newPosition", pack);
+  }
 }, 1000 / 55);
+
 module.exports = app;

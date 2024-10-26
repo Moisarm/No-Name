@@ -28,7 +28,9 @@
 
       socket.on("newPosition",function(data){
         ctx.clearRect(0,0,500,500)
-        ctx.fillText('P',data.x,data.y)
+        for(let i=0;i < data.length;i++){
+          ctx.fillText('P',data[i].x,data[i].y)
+        }
       })
       
       
