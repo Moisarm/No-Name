@@ -8,18 +8,18 @@ module.exports = (io) => {
     socket.id = Math.random();
     socketList[socket.id] = socket;
 
-    let player = playerModel(socket.id);
-    playerList[socket.id] = player;
+    let Player = playerModel(socket.id);
+    playerList[socket.id] = Player;
 
     socket.on("keyPress", (data) => {
       if (data.inputId === "left") {
-        playerList[socket.id].pressingLeft = data.state;
+        Player.pressingLeft = data.state;
       } else if (data.inputId === "right") {
-        playerList[socket.id].pressingRight = data.state;
+        Player.pressingRight = data.state;
       } else if (data.inputId === "up") {
-        playerList[socket.id].pressingUp = data.state;
+        Player.pressingUp = data.state;
       } else if (data.inputId === "down") {
-        playerList[socket.id].pressingDown = data.state;
+        Player.pressingDown = data.state;
       }
     });
 
