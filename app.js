@@ -22,8 +22,17 @@ console.log("Se inicia el servidor");
 /*Puerto que en el cual se ejecutara el servidor*/
 serv.listen(2000);
 
+//creo una lista de sockets para las posiciones de los jugadores
+let socketList = {};
+
 /*Inicio el listening de socket.io */
 io.sockets.on("connection", function (socket) {
+  //Declaro Variables
+  socket.id = Math.random();
+  socket.x = 0;
+  socket.y = 0;
+  socketList[socket.id] = socket;
+
   console.log("socket connection");
 
   /*Sigue siendo listening de lo que envia el cliente, aunque se usa un emit*/
@@ -42,4 +51,16 @@ io.sockets.on("connection", function (socket) {
   });
 });
 
+setInterval(function () {
+  for (let i in socketList) {
+    let socket = socketList[i];
+    socket.x++;
+    socket.y++;
+
+    socket.emit("newPosition", {
+      x: socket.x,
+      y: socket.y,
+    });
+  }
+}, 1000 / 25);
 module.exports = app;
