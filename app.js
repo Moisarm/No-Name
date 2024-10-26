@@ -31,9 +31,16 @@ io.sockets.on("connection", function (socket) {
   socket.id = Math.random();
   socket.x = 0;
   socket.y = 0;
+  socket.number = "" + Math.floor(Math.random() * 10);
+
   socketList[socket.id] = socket;
 
-  console.log("socket connection");
+  console.log(`socket connection ${socket.id}`);
+
+  /*Escucha si la persona se desconecta del server  */
+  socket.on("disconnect", function () {
+    delete socketList[socket.id];
+  });
 });
 
 setInterval(function () {
@@ -46,6 +53,7 @@ setInterval(function () {
     pack.push({
       x: socket.x,
       y: socket.y,
+      number: socket.number,
     });
   }
 
