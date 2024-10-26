@@ -33,7 +33,29 @@
         }
       })
       
+      document.onkeydown= function(event){
+        if(event.keyCode === 68){//d
+          socket.emit("keyPress",{inputId:"right", state:true})
+        }else if(event.keyCode === 83){//s
+          socket.emit("keyPress",{inputId:"down",statusbar:true})
+        }else if(event.keyCode === 65){//s
+          socket.emit("keyPress",{inputId:"left",statusbar:true})
+        }else if(event.keyCode === 87){//s
+          socket.emit("keyPress",{inputId:"up",statusbar:true})
+        }
+      }
     
+      document.onkeyup= function(event){
+        if(event.keyCode === 68){//d
+          socket.emit("keyPress",{inputId:"right", state:true})
+        }else if(event.keyCode === 83){//s
+          socket.emit("keyPress",{inputId:"down",statusbar:true})
+        }else if(event.keyCode === 65){//s
+          socket.emit("keyPress",{inputId:"left",statusbar:true})
+        }else if(event.keyCode === 87){//s
+          socket.emit("keyPress",{inputId:"up",statusbar:true})
+        }
+      }
 
       
     </script>
