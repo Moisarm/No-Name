@@ -8,6 +8,7 @@
         body{
             background-color: #000;
             margin: 0;
+            color: white;
         }
     </style>
 </head>
@@ -15,23 +16,22 @@
     <button onclick="emitir()" style="color: blueviolet;">Accion</button>
 </body>
 <script src="/socket.io/socket.io.js"></script>
+    
+    <canvas id="ctx" width="500" height="500" style="background-color: white; border: 1px solid white;""></canvas>
     <script>
+
       const socket = io();
-      socket.emit("XD",{
-        info:"Esto es un objeto, se obtiene a del parametro  de la funcion socket.on(data)", 
+
+      let ctx = document.getElementById("ctx").getContext("2d");
+
+      ctx.font="30px Arial";
+
+      socket.on("newPosition",function(data){
+        ctx.clearRect(0,0,500,500)
+        ctx.fillText('P',data.x,data.y)
       })
       
-      //Tambien se puede hacer una funcion expresada para poder emitir informacion con un evento específico
-      let emitir= function(){
-        socket.emit("funcion",{
-            dato:"Esto se obtuvo al hacer click al boton"
-        })
-  
-      }
-
-      socket.on("serverMsg",function(data){
-        console.log(data.msg);
-      })
+      
 
       
     </script>

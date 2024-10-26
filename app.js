@@ -62,5 +62,5 @@ setInterval(function () {
       y: socket.y,
     });
   }
-}, 1000 / 25);
+}, 1000 / 55);
 module.exports = app;
