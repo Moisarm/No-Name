@@ -42,7 +42,7 @@ let player = function (id) {
     maxSpeed: 10,
   };
 
-  self.updatePosition = function () {
+  self.updatePosition = () => {
     if (self.pressingUp) {
       self.y -= self.maxSpeed;
     }
@@ -56,6 +56,7 @@ let player = function (id) {
       self.x += self.maxSpeed;
     }
   };
+
   return self;
 };
 
@@ -65,18 +66,20 @@ io.sockets.on("connection", function (socket) {
   socket.id = Math.random();
   socketList[socket.id] = socket;
 
+  //Crea el jugador mediante la conexion al servidor
+
   let Player = player(socket.id);
   playerList[socket.id] = Player;
 
   socket.on("keyPress", function (data) {
     if (data.inputId === "left") {
-      playerList.pressingLeft = data.state;
+      playerList[socket.id].pressingLeft = data.state;
     } else if (data.inputId === "right") {
-      playerList.pressingRight = data.state;
+      playerList[socket.id].pressingRight = data.state;
     } else if (data.inputId === "up") {
-      playerList.pressingUp = data.state;
+      playerList[socket.id].pressingUp = data.state;
     } else if (data.inputId === "down") {
-      playerList.pressingDown = data.state;
+      playerList[socket.id].pressingDown = data.state;
     }
   });
   console.log(`socket connection ${socket.id}`);
@@ -84,26 +87,34 @@ io.sockets.on("connection", function (socket) {
   /*Escucha si la persona se desconecta del server  */
   socket.on("disconnect", function () {
     delete socketList[socket.id];
+    delete playerList[socket.id];
   });
 });
 
-setInterval(function () {
-  let pack = []; //Contiene la informacion de todos los jugadores
+try {
+  setInterval(function () {
+    let pack = []; //Contiene la informacion de todos los jugadores
 
-  for (let i in playerList) {
-    let player = playerList[i];
-    player.updatePosition();
-    pack.push({
-      x: player.x,
-      y: player.y,
-      number: player.number,
-    });
-  }
+    //se  recorre la lista de jugadores
 
-  for (let i in socketList) {
-    let socket = socketList[i];
-    socket.emit("newPosition", pack);
-  }
-}, 1000 / 55);
+    for (let i in playerList) {
+      let player = playerList[i];
+      player.updatePosition();
+      pack.push({
+        x: player.x,
+        y: player.y,
+        number: player.number,
+      });
+    }
+
+    //Se recorre la lista de conexiones
+    for (let i in socketList) {
+      let socket = socketList[i];
+      socket.emit("newPosition", pack);
+    }
+  }, 1000 / 55);
+} catch (error) {
+  console.error("Error en el servidor ", error);
+}
 
 module.exports = app;
