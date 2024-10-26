@@ -16,7 +16,7 @@ let game = new Phaser.Game(config);
 //precarga recursos
 function preload() {
   //Assets here
-  this.load.img("fondo", "/Client/Public/HTML/example.png");
+  this.load.img("fondo", "/Client/Public/Assets/Background/example.png");
 }
 
 //Los añade al navegador

@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>No Name</title>
     <style>
-        body{
-            background-color: #000;
-            margin: 0;
-            color: white;
-        }
-    </style>
+      body{
+        background-color: #000;
+        margin: 0;
+        color: white;
+      }
+      </style>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../../../Server/JS/index.js"></script>
 </head>
+
+
 <body>
     <button onclick="emitir()" style="color: blueviolet;">Accion</button>
 </body>
-<script src="/socket.io/socket.io.js"></script>
     
     <canvas id="ctx" width="500" height="500" style="background-color: white; border: 1px solid white;""></canvas>
     <script>
