@@ -17,5 +17,13 @@
 <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
+      socket.emit("XD",{
+        info:"Esto es un objeto, se obtiene a del parametro  de la funcion socket.on(data)", 
+
+      })
+
+      socket.on("serverMsg",function(data){
+        console.log(data.msg);
+      })
     </script>
 </html>
