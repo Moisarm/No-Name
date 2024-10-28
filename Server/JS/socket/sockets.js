@@ -20,7 +20,7 @@ module.exports = (io) => {
 
     //Funcion que detecta el presionamiento de flechas para dar movilidad
     socket.on("keyPress", (data) => {
-      Player.handleKeyPress(data);
+      Player.KeyPress(data);
     });
 
     console.log(`socket connection ${socket.id}`);
@@ -37,6 +37,7 @@ module.exports = (io) => {
 
   // Actualiza las posiciones de los jugadores
   setInterval(() => {
+    //Iguala pack al retorno de updateAll, el cual es un array de los datos
     let pack = player.updateAll(playerList);
 
     //Por cada conexion en la lista de socket

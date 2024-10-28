@@ -4,19 +4,45 @@ class Player {
     this.x = 512;
     this.y = 250;
     this.id = id;
+    this.gravity = 0.5;
+    this.velocityY = 0;
+    this.velocityX = 0;
+    this.maxSpeed = 10;
     this.number = "" + Math.floor(Math.random() * 10);
+    this.onGround = false;
     this.pressingUp = false;
     this.pressingDown = false;
     this.pressingLeft = false;
     this.pressingRight = false;
-    this.maxSpeed = 10;
 
     //guarda el jugador en la lista de jugadores cada que se crea un jugador
     playerList[this.id] = this;
   }
 
+  //Funcion que aplica gravedad
+  Gravity() {
+    if (!this.onGround) {
+      this.velocityY += this.gravity; // Aumenta la velocidad debido a la gravedad
+    } else {
+      this.velocityY = 0; // Resetea la velocidad vertical si está en el suelo
+    }
+    this.y += this.velocityY; // Aplica la velocidad vertical a la posición y
+
+    // Verifica si el jugador ha tocado el suelo
+    if (this.y >= 575 - 50) {
+      this.y = 575 - 50;
+      this.onGround = true; // Indica que está en el suelo
+    } else {
+      this.onGround = false; // No está en el suelo
+    }
+
+    //Limite de los muros
+    if (this.x < 0) this.x = 0; // Límite izquierdo
+    if (this.x > 1024 - 50) this.x = 1024 - 50; // Límite derecho
+  }
+
   //Funcion que detecta el presionamiento de flechas para dar movilidad
-  handleKeyPress(data) {
+  KeyPress(data) {
     if (data.inputId === "left") {
       this.pressingLeft = data.state;
     } else if (data.inputId === "right") {
@@ -30,8 +56,10 @@ class Player {
 
   //Funcion que actualiza las posiciones de los jugadores
   updatePosition() {
+    this.Gravity();
+
     if (this.pressingUp) {
-      this.y -= this.maxSpeed;
+      this.y -= this.maxSpeed + 5;
     }
     if (this.pressingDown) {
       this.y += this.maxSpeed;
@@ -44,6 +72,7 @@ class Player {
     }
   }
 
+  //Funcion estatica que actualiza a todos los jugadores
   static updateAll(playerList) {
     let pack = [];
 
@@ -65,6 +94,7 @@ class Player {
     return pack;
   }
 
+  //Funcion que desconecta al jugador
   disconect() {
     delete playerList[this.id];
   }
