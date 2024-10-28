@@ -23,6 +23,11 @@ module.exports = (io) => {
       Player.KeyPress(data);
     });
 
+    socket.on("attack", (data) => {
+      const attackData = Player.atack(data.id);
+      io.sockets.emit("newAttack", attackData); // Emite a todos los jugadores
+    });
+
     console.log(`socket connection ${socket.id}`);
 
     //Funcion que detecta cuando se desconecta un jugador, no necesita emit

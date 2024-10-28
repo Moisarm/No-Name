@@ -10,6 +10,7 @@
         background-color: #000;
         margin: 0;
         color: white;
+        overflow: hidden;
       }
       </style>
     <script src="/node_modules/phaser/dist/phaser.min.js
@@ -23,18 +24,18 @@
     
 </body>
     
-    <canvas id="canvas" width="1024" height="576" style="background-color: black; border: 1px solid white;"></canvas>
+    <canvas id="canvas" width="1024" height="576" style="background-color: black; border: 1px solid red;"></canvas>
     <script>
-        // function resizeCanvas() {
-        //     canvas.width = window.innerWidth;
-        //     canvas.height = window.innerHeight;
-        // }
+        function resizeCanvas() {
+             canvas.width = window.innerWidth;
+             canvas.height = window.innerHeight;
+        }
 
-        // // Inicializar tamaño del canvas
-        // resizeCanvas();
+         // Inicializar tamaño del canvas
+        resizeCanvas();
 
-        // // Ajustar tamaño al redimensionar la ventana
-        // window.addEventListener("resize", resizeCanvas);
+        // Ajustar tamaño al redimensionar la ventana
+       window.addEventListener("resize", resizeCanvas);
       const socket = io();
 
       const ctx = document.getElementById("canvas").getContext("2d");
@@ -47,15 +48,30 @@
         ctx.clearRect(0,0,1024,576)
         for(let i=0;i < data.length;i++){
           ctx.fillRect(data[i].x, data[i].y, 50, -150)
-        }
+          
+        
+          if (data[i].attack) {
+            ctx.fillStyle = "blue"; // Color del ataque
+           ctx.fillRect(data[i].attack.x, data[i].attack.y -150, data[i].attack.width, data[i].attack.height);
+          }
+        } 
+        
       })
+
+      socket.on("newAttack", function(data) {
+        ctx.fillStyle = "red"; // Cambia el color del ataque
+        ctx.fillRect(data.x, data.y-150, data.width, data.height);
+      }); 
+
+     
       
       
       window.addEventListener("keydown",(event)=>{
         switch (event.key) {
+          //Predeterminado
           case "a":
-              socket.emit("keyPress",{inputId:"left", state:true})
-              break;
+            socket.emit("keyPress",{inputId:"left", state:true})
+            break;
           case "d":
             socket.emit("keyPress",{inputId:"right", state:true})
             break;
@@ -65,6 +81,27 @@
             
           case "s":
             socket.emit("keyPress",{inputId:"down",state:true})  
+            break;
+
+            case "j": // Asumiendo que "j" es para atacar
+              socket.emit("attack", { id: socket.id });  
+            break;
+
+          //Player 2 Local
+          case "ArrowLeft":
+            socket.emit("keyPress",{inputId:"left", state:true})
+            break;
+          case "ArrowRight":
+            socket.emit("keyPress",{inputId:"right", state:true})
+            break;
+          case "ArrowUp":
+            socket.emit("keyPress",{inputId:"up", state:true})
+            break;
+            
+          case "ArrowDown":
+            socket.emit("keyPress",{inputId:"down",state:true})  
+            break;
+  
 
             default:
               break;
@@ -86,19 +123,40 @@
     
       window.addEventListener("keyup",(event)=>{
         switch (event.key) {
+          //Predeterminado
           case "a":
               socket.emit("keyPress",{inputId:"left", state:false})
               break;
+
           case "d":
             socket.emit("keyPress",{inputId:"right", state:false})
             break;
+
           case "w":
             socket.emit("keyPress",{inputId:"up", state:false})
             break;
             
           case "s":
             socket.emit("keyPress",{inputId:"down",state:false})  
+            break;
 
+          //Player2 Local
+          case "ArrowLeft":
+            socket.emit("keyPress",{inputId:"left", state:false})
+            break;
+
+          case "ArrowRight":
+            socket.emit("keyPress",{inputId:"right", state:false})
+            break;
+
+          case "ArrowUp":
+            socket.emit("keyPress",{inputId:"up", state:false})
+            break;
+            
+          case "ArrowDown":
+            socket.emit("keyPress",{inputId:"down",state:false}) 
+            break; 
+  
             default:
               break;
         }

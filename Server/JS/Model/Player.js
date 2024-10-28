@@ -4,10 +4,18 @@ class Player {
     this.x = 512;
     this.y = 250;
     this.id = id;
-    this.gravity = 0.5;
+    this.gravity = 0.8;
     this.velocityY = 0;
     this.velocityX = 0;
     this.maxSpeed = 10;
+    this.atackBox = {
+      light: {
+        x: this.x,
+        y: this.y,
+        width: 100,
+        height: 50,
+      },
+    };
     this.number = "" + Math.floor(Math.random() * 10);
     this.onGround = false;
     this.pressingUp = false;
@@ -88,10 +96,23 @@ class Player {
       pack.push({
         x: player.x,
         y: player.y,
+        atkWidth: player.atackBox.light.width,
+        atkHeight: player.atackBox.light.height,
         //number: player.number,
       });
     }
     return pack;
+  }
+
+  atack(id) {
+    // Puedes agregar lógica para definir el ataque específico
+    this.atackBox[id] = {
+      x: this.x + 50, // Posición del ataque (ajusta según tu lógica)
+      y: this.y,
+      width: 100, // Ajusta el tamaño del ataque
+      height: 50,
+    };
+    return this.atackBox[id];
   }
 
   //Funcion que desconecta al jugador
