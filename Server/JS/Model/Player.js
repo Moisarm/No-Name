@@ -88,7 +88,7 @@ class Player {
       pack.push({
         x: player.x,
         y: player.y,
-        number: player.number,
+        //number: player.number,
       });
     }
     return pack;
