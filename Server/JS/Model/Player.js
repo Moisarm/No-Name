@@ -1,5 +1,6 @@
 class Player {
-  constructor(id) {
+  //paso el id y la lista de jugadores como parametros
+  constructor(id, playerList) {
     this.x = 512;
     this.y = 250;
     this.id = id;
@@ -9,6 +10,9 @@ class Player {
     this.pressingLeft = false;
     this.pressingRight = false;
     this.maxSpeed = 10;
+
+    //guarda el jugador en la lista de jugadores cada que se crea un jugador
+    playerList[this.id] = this;
   }
 
   updatePosition() {

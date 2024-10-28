@@ -1,7 +1,5 @@
 //Importa Modelo del jugador
-
 const player = require("../Model/Player");
-const playerModel = require("../Model/Player");
 
 //Crea lista de conexiones y jugadores
 let socketList = {};
@@ -18,10 +16,7 @@ module.exports = (io) => {
     socketList[socket.id] = socket;
 
     //Declara que Player es una nueva instancia de la clase player
-    let Player = new player(socket.id);
-
-    //guarda en el array el jugador mediante el id
-    playerList[socket.id] = Player;
+    let Player = new player(socket.id, playerList);
 
     //Funcion que detecta el presionamiento de flechas para dar movilidad
     socket.on("keyPress", (data) => {
