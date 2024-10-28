@@ -15,6 +15,20 @@ class Player {
     playerList[this.id] = this;
   }
 
+  //Funcion que detecta el presionamiento de flechas para dar movilidad
+  handleKeyPress(data) {
+    if (data.inputId === "left") {
+      this.pressingLeft = data.state;
+    } else if (data.inputId === "right") {
+      this.pressingRight = data.state;
+    } else if (data.inputId === "up") {
+      this.pressingUp = data.state;
+    } else if (data.inputId === "down") {
+      this.pressingDown = data.state;
+    }
+  }
+
+  //Funcion que actualiza las posiciones de los jugadores
   updatePosition() {
     if (this.pressingUp) {
       this.y -= this.maxSpeed;

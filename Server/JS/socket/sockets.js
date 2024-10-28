@@ -2,8 +2,8 @@
 const player = require("../Model/Player");
 
 //Crea lista de conexiones y jugadores
-let socketList = {};
-let playerList = {};
+socketList = {};
+playerList = {};
 
 //Funcion principal de socket.io
 module.exports = (io) => {
@@ -20,15 +20,7 @@ module.exports = (io) => {
 
     //Funcion que detecta el presionamiento de flechas para dar movilidad
     socket.on("keyPress", (data) => {
-      if (data.inputId === "left") {
-        Player.pressingLeft = data.state;
-      } else if (data.inputId === "right") {
-        Player.pressingRight = data.state;
-      } else if (data.inputId === "up") {
-        Player.pressingUp = data.state;
-      } else if (data.inputId === "down") {
-        Player.pressingDown = data.state;
-      }
+      Player.handleKeyPress(data);
     });
 
     console.log(`socket connection ${socket.id}`);
@@ -72,5 +64,5 @@ module.exports = (io) => {
       //emite la nueva posicion de cada jugador
       socket.emit("newPosition", pack);
     }
-  }, 1000 / 55); //1000/60 = cada 60 frames por segundo
+  }, 1000 / 60); //1000/60 = cada 60 frames por segundo
 };
