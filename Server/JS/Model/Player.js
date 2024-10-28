@@ -43,6 +43,10 @@ class Player {
       this.x += this.maxSpeed;
     }
   }
+
+  disconect() {
+    delete playerList[this.id];
+  }
 }
 
 module.exports = Player;

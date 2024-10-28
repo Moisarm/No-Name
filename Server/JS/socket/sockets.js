@@ -31,7 +31,7 @@ module.exports = (io) => {
       delete socketList[socket.id];
 
       //elimina al jugador de la lista
-      delete playerList[socket.id];
+      Player.disconect(socket.id);
     });
   });
 
