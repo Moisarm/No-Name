@@ -16,7 +16,7 @@ module.exports = (io) => {
     socketList[socket.id] = socket;
 
     //Declara que Player es una nueva instancia de la clase player
-    let Player = new player(socket.id, playerList);
+    var Player = new player(socket.id, playerList);
 
     //Funcion que detecta el presionamiento de flechas para dar movilidad
     socket.on("keyPress", (data) => {
@@ -37,24 +37,7 @@ module.exports = (io) => {
 
   // Actualiza las posiciones de los jugadores
   setInterval(() => {
-    //se hace un array que guardará las posiciones de los jugadores
-    let pack = [];
-
-    //Por cada jugador en la lista de jugadores
-    for (let i in playerList) {
-      //declara al jugador = jugador en la pos i de la lista
-      let player = playerList[i];
-
-      //llama a la funcion que actualiza las posiciones de los jugadores
-      player.updatePosition();
-
-      //Guarda las posiciones en la lista de posiciones
-      pack.push({
-        x: player.x,
-        y: player.y,
-        number: player.number,
-      });
-    }
+    let pack = player.updateAll(playerList);
 
     //Por cada conexion en la lista de socket
     for (let i in socketList) {

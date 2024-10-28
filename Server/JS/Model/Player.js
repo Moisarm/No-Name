@@ -44,6 +44,27 @@ class Player {
     }
   }
 
+  static updateAll(playerList) {
+    let pack = [];
+
+    //Por cada jugador en la lista de jugadores
+    for (let i in playerList) {
+      //declara al jugador = jugador en la pos i de la lista
+      let player = playerList[i];
+
+      //llama a la funcion que actualiza las posiciones de los jugadores
+      player.updatePosition();
+
+      //Guarda las posiciones en la lista de posiciones
+      pack.push({
+        x: player.x,
+        y: player.y,
+        number: player.number,
+      });
+    }
+    return pack;
+  }
+
   disconect() {
     delete playerList[this.id];
   }
