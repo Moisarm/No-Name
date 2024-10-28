@@ -1,30 +1,30 @@
-module.exports = function (id) {
-  let self = {
-    x: 250,
-    y: 250,
-    id: id,
-    number: "" + Math.floor(Math.random() * 10),
-    pressingUp: false,
-    pressingDown: false,
-    pressingLeft: false,
-    pressingRight: false,
-    maxSpeed: 10,
-  };
+class Player {
+  constructor(id) {
+    this.x = 512;
+    this.y = 250;
+    this.id = id;
+    this.number = "" + Math.floor(Math.random() * 10);
+    this.pressingUp = false;
+    this.pressingDown = false;
+    this.pressingLeft = false;
+    this.pressingRight = false;
+    this.maxSpeed = 10;
+  }
 
-  self.updatePosition = () => {
-    if (self.pressingUp) {
-      self.y -= self.maxSpeed;
+  updatePosition() {
+    if (this.pressingUp) {
+      this.y -= this.maxSpeed;
     }
-    if (self.pressingDown) {
-      self.y += self.maxSpeed;
+    if (this.pressingDown) {
+      this.y += this.maxSpeed;
     }
-    if (self.pressingLeft) {
-      self.x -= self.maxSpeed;
+    if (this.pressingLeft) {
+      this.x -= this.maxSpeed;
     }
-    if (self.pressingRight) {
-      self.x += self.maxSpeed;
+    if (this.pressingRight) {
+      this.x += this.maxSpeed;
     }
-  };
+  }
+}
 
-  return self;
-};
+module.exports = Player;

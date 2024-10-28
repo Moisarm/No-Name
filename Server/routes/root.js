@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-// Define tus rutas aquí, si las hay
+// Define rutas aquí
 
 module.exports = router;

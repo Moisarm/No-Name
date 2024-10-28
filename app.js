@@ -3,7 +3,7 @@ const express = require("express");
 const http = require("http");
 const socketIo = require("socket.io");
 const path = require("path");
-const routes = require("./Server/routes/index");
+const routes = require("./Server/routes/root");
 const socketManager = require("./Server/JS/socket/sockets");
 
 const app = express();

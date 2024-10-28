@@ -1,0 +1,5 @@
+class sprite {
+  constructor() {
+    pos;
+  }
+}
