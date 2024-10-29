@@ -84,21 +84,33 @@ class Player {
   static updateAll(playerList) {
     let pack = [];
 
-    //Por cada jugador en la lista de jugadores
     for (let i in playerList) {
-      //declara al jugador = jugador en la pos i de la lista
       let player = playerList[i];
 
-      //llama a la funcion que actualiza las posiciones de los jugadores
+      // Actualiza la posición del jugador
       player.updatePosition();
 
-      //Guarda las posiciones en la lista de posiciones
+      // Agrega la lógica de colisión
+      for (let j in playerList) {
+        if (i !== j) {
+          // No comparar con uno mismo
+          let otherPlayer = playerList[j];
+          if (player.checkCollision(otherPlayer)) {
+            // Lógica a ejecutar si hay colisión
+            console.log(
+              `Colisión entre jugador ${player.id} y jugador ${otherPlayer.id}`
+            );
+          }
+        }
+      }
+
+      // Guarda la posición en el paquete
       pack.push({
         x: player.x,
         y: player.y,
         atkWidth: player.atackBox.light.width,
         atkHeight: player.atackBox.light.height,
-        //number: player.number,
+        collision: false,
       });
     }
     return pack;
@@ -113,6 +125,15 @@ class Player {
       height: 50,
     };
     return this.atackBox[id];
+  }
+
+  checkCollision(otherPlayer) {
+    return (
+      this.x < otherPlayer.x + otherPlayer.atackBox.light.width &&
+      this.x + this.atackBox.light.width > otherPlayer.x &&
+      this.y < otherPlayer.y + otherPlayer.atackBox.light.height &&
+      this.y + this.atackBox.light.height > otherPlayer.y
+    );
   }
 
   //Funcion que desconecta al jugador

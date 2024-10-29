@@ -52,8 +52,14 @@
         
           if (data[i].attack) {
             ctx.fillStyle = "blue"; // Color del ataque
-           ctx.fillRect(data[i].attack.x, data[i].attack.y -150, data[i].attack.width, data[i].attack.height);
+            ctx.fillRect(data[i].attack.x, data[i].attack.y -150, data[i].attack.width, data[i].attack.height);
           }
+
+          if (data[i].collision) {
+            ctx.fillStyle = "red"; // Color para indicar colisión
+            ctx.fillRect(data[i].x, data[i].y, 50, -150);
+          }
+  
         } 
         
       })
@@ -62,8 +68,6 @@
         ctx.fillStyle = "red"; // Cambia el color del ataque
         ctx.fillRect(data.x, data.y-150, data.width, data.height);
       }); 
-
-     
       
       
       window.addEventListener("keydown",(event)=>{
