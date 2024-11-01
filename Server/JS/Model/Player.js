@@ -8,6 +8,8 @@ class Player {
     this.velocityY = 0;
     this.velocityX = 0;
     this.maxSpeed = 10;
+    this.attacking = false; //Probablemente use esta bandera para colisiones
+    this.attackRange = 50;
     this.atackBox = {
       light: {
         x: this.x,
@@ -51,14 +53,22 @@ class Player {
 
   //Funcion que detecta el presionamiento de flechas para dar movilidad
   KeyPress(data) {
-    if (data.inputId === "left") {
-      this.pressingLeft = data.state;
-    } else if (data.inputId === "right") {
-      this.pressingRight = data.state;
-    } else if (data.inputId === "up") {
-      this.pressingUp = data.state;
-    } else if (data.inputId === "down") {
-      this.pressingDown = data.state;
+    switch (data.inputId) {
+      case "left":
+        this.pressingLeft = data.state;
+        break;
+
+      case "right":
+        this.pressingRight = data.state;
+        break;
+
+      case "up":
+        this.pressingUp = data.state;
+        break;
+
+      case "down":
+        this.pressingDown = data.state;
+        break;
     }
   }
 
@@ -80,9 +90,8 @@ class Player {
   }
 
   atack(id) {
-    // Puedes agregar lógica para definir el ataque específico
     this.atackBox[id] = {
-      x: this.x + 50, // Posición del ataque (ajusta según tu lógica)
+      x: this.x + 50, // Posición del ataque
       y: this.y,
       width: 100, // Ajusta el tamaño del ataque
       height: 50,
@@ -91,24 +100,25 @@ class Player {
   }
 
   checkCollision(otherPlayer) {
-    // Check if the bounding boxes overlap on the x-axis
+    // Compruebe si los cuadros delimitadores se superponen en el eje x
     const xOverlap = this.x + 50 > otherPlayer.x && this.x < otherPlayer.x + 50;
 
-    // Check if the bounding boxes overlap on the y-axis
+    // Compruebe si los cuadros delimitadores se superponen en el eje y
     const yOverlap = this.y + 50 > otherPlayer.y && this.y < otherPlayer.y + 50;
 
-    // If there is overlap on both axes, a collision has occurred
+    // Si se sobreponen en alguno de sus ejes se devuelve la colision
     return xOverlap && yOverlap;
   }
 
   handleCollision(otherPlayer) {
-    // Determine the direction of the collision based on player positions
+    // Determina la direccion de la colision basado en la posicion del jugador
     const dx = this.x - otherPlayer.x;
     const dy = this.y - otherPlayer.y;
 
-    // Move players apart based on the direction of the collision
+    // Mueve a los jugadores en base a la direccion de la colision
+
     if (Math.abs(dx) > Math.abs(dy)) {
-      // Collision is primarily horizontal
+      // Colision es principalmente horizontal
       if (dx > 0) {
         this.x += 5;
         otherPlayer.x -= 5;
@@ -117,7 +127,7 @@ class Player {
         otherPlayer.x += 5;
       }
     } else {
-      // Collision is primarily vertical
+      // Colision es principalmente vertical
       if (dy > 0) {
         this.y += 5;
         otherPlayer.y -= 5;
@@ -135,7 +145,8 @@ class Player {
       const player = playerList[id];
       player.updatePosition();
 
-      // Check for collisions with other players
+      // Chequea si hay  colisiones con otros jugadores
+
       for (const otherId in playerList) {
         if (id !== otherId) {
           if (player.checkCollision(playerList[otherId])) {
