@@ -128,11 +128,19 @@ class Player {
   }
 
   checkCollision(otherPlayer) {
+    const { x, y, atackBox } = this;
+    const { x: otherX, y: otherY, atackBox: otherAtackBox } = otherPlayer;
+
+    const thisRight = x + atackBox.light.width;
+    const thisBottom = y + atackBox.light.height;
+    const otherRight = otherX + otherAtackBox.light.width;
+    const otherBottom = otherY + otherAtackBox.light.height;
+
     return (
-      this.x < otherPlayer.x + otherPlayer.atackBox.light.width &&
-      this.x + this.atackBox.light.width > otherPlayer.x &&
-      this.y < otherPlayer.y + otherPlayer.atackBox.light.height &&
-      this.y + this.atackBox.light.height > otherPlayer.y
+      x < otherRight &&
+      thisRight > otherX &&
+      y < otherBottom &&
+      thisBottom > otherY
     );
   }
 
