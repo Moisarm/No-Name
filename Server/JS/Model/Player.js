@@ -62,7 +62,6 @@ class Player {
     }
   }
 
-  //Funcion que actualiza las posiciones de los jugadores
   updatePosition() {
     this.Gravity();
 
@@ -80,42 +79,6 @@ class Player {
     }
   }
 
-  //Funcion estatica que actualiza a todos los jugadores
-  static updateAll(playerList) {
-    let pack = [];
-
-    for (let i in playerList) {
-      let player = playerList[i];
-
-      // Actualiza la posición del jugador
-      player.updatePosition();
-
-      // Agrega la lógica de colisión
-      for (let j in playerList) {
-        if (i !== j) {
-          // No comparar con uno mismo
-          let otherPlayer = playerList[j];
-          if (player.checkCollision(otherPlayer)) {
-            // Lógica a ejecutar si hay colisión
-            console.log(
-              `Colisión entre jugador ${player.id} y jugador ${otherPlayer.id}`
-            );
-          }
-        }
-      }
-
-      // Guarda la posición en el paquete
-      pack.push({
-        x: player.x,
-        y: player.y,
-        atkWidth: player.atackBox.light.width,
-        atkHeight: player.atackBox.light.height,
-        collision: false,
-      });
-    }
-    return pack;
-  }
-
   atack(id) {
     // Puedes agregar lógica para definir el ataque específico
     this.atackBox[id] = {
@@ -128,20 +91,62 @@ class Player {
   }
 
   checkCollision(otherPlayer) {
-    const { x, y, atackBox } = this;
-    const { x: otherX, y: otherY, atackBox: otherAtackBox } = otherPlayer;
+    // Check if the bounding boxes overlap on the x-axis
+    const xOverlap = this.x + 50 > otherPlayer.x && this.x < otherPlayer.x + 50;
 
-    const thisRight = x + atackBox.light.width;
-    const thisBottom = y + atackBox.light.height;
-    const otherRight = otherX + otherAtackBox.light.width;
-    const otherBottom = otherY + otherAtackBox.light.height;
+    // Check if the bounding boxes overlap on the y-axis
+    const yOverlap = this.y + 50 > otherPlayer.y && this.y < otherPlayer.y + 50;
 
-    return (
-      x < otherRight &&
-      thisRight > otherX &&
-      y < otherBottom &&
-      thisBottom > otherY
-    );
+    // If there is overlap on both axes, a collision has occurred
+    return xOverlap && yOverlap;
+  }
+
+  handleCollision(otherPlayer) {
+    // Determine the direction of the collision based on player positions
+    const dx = this.x - otherPlayer.x;
+    const dy = this.y - otherPlayer.y;
+
+    // Move players apart based on the direction of the collision
+    if (Math.abs(dx) > Math.abs(dy)) {
+      // Collision is primarily horizontal
+      if (dx > 0) {
+        this.x += 5;
+        otherPlayer.x -= 5;
+      } else {
+        this.x -= 5;
+        otherPlayer.x += 5;
+      }
+    } else {
+      // Collision is primarily vertical
+      if (dy > 0) {
+        this.y += 5;
+        otherPlayer.y -= 5;
+      } else {
+        this.y -= 5;
+        otherPlayer.y += 5;
+      }
+    }
+  }
+
+  //Funcion que actualiza las posiciones de los jugadores
+  static updateAll(playerList) {
+    const pack = [];
+    for (const id in playerList) {
+      const player = playerList[id];
+      player.updatePosition();
+
+      // Check for collisions with other players
+      for (const otherId in playerList) {
+        if (id !== otherId) {
+          if (player.checkCollision(playerList[otherId])) {
+            player.handleCollision(playerList[otherId]);
+          }
+        }
+      }
+
+      pack.push({ x: player.x, y: player.y });
+    }
+    return pack;
   }
 
   //Funcion que desconecta al jugador
