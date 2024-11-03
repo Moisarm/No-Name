@@ -48,7 +48,7 @@ class Player {
 
     //Limite de los muros
     if (this.x < 0) this.x = 0; // Límite izquierdo
-    if (this.x > 1024 - 50) this.x = 1024 - 50; // Límite derecho
+    if (this.x > 1078) this.x = 1078; // Límite derecho
   }
 
   //Funcion que detecta el presionamiento de flechas para dar movilidad

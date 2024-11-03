@@ -45,7 +45,7 @@
 
       //(0,0,1024,576)"0,0 = pos x,y" 1024,576 = tamaño x,y o width y height
       socket.on("newPosition",function(data){
-        ctx.clearRect(0,0,1024,576)
+        ctx.clearRect(0,0,2074,576)
         for(let i=0;i < data.length;i++){
           ctx.fillRect(data[i].x, data[i].y, 50, -150)
           
