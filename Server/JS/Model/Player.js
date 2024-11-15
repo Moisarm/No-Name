@@ -1,7 +1,7 @@
 class Player {
   //paso el id y la lista de jugadores como parametros
   constructor(id, playerList) {
-    this.x = 512;
+    this.x = 112;
     this.y = 250;
     this.id = id;
     this.gravity = 0.5;
