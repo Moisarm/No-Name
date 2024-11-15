@@ -1,45 +1,37 @@
+// main.js
 const socket = io();
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 
-const ctx = document.getElementById("canvas").getContext("2d");
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
 
-ctx.font = "30px Arial";
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
-//(0,0,1024,576)"0,0 = pos x,y" 1024,576 = tamaño x,y o width y height
-socket.on("newPosition", function (data) {
+socket.on("newPosition", (data) => {
   ctx.clearRect(0, 0, 1024, 576);
-  for (let i = 0; i < data.length; i++) {
-    ctx.fillText(data[i].number, data[i].x, data[i].y);
-  }
+  data.forEach((player) => {
+    ctx.fillStyle = player.collision ? "red" : "blue";
+    ctx.fillRect(player.x, player.y, 50, -150);
+  });
 });
 
-document.onkeydown = function (event) {
-  if (event.key == "d") {
-    //d
-    socket.emit("keyPress", { inputId: "right", state: true });
-  } else if (event.key === "s") {
-    //s
-    socket.emit("keyPress", { inputId: "down", state: true });
-  } else if (event.key == "a") {
-    //s
-    socket.emit("keyPress", { inputId: "left", state: true });
-  } else if (event.key == "w") {
-    //s
-    socket.emit("keyPress", { inputId: "up", state: true });
-  }
-};
+socket.on("newAttack", (data) => {
+  ctx.fillStyle = "red";
+  ctx.fillRect(data.x, data.y - 150, data.width, data.height);
+});
 
-document.onkeyup = function (event) {
-  if (event.key == "d") {
-    //d
-    socket.emit("keyPress", { inputId: "right", state: false });
-  } else if (event.key === "s") {
-    //s
-    socket.emit("keyPress", { inputId: "down", state: false });
-  } else if (event.key == "a") {
-    //s
-    socket.emit("keyPress", { inputId: "left", state: false });
-  } else if (event.key == "w") {
-    //s
-    socket.emit("keyPress", { inputId: "up", state: false });
-  }
-};
+window.addEventListener("keydown", (event) => {
+  const keyMap = { a: "left", d: "right", w: "up", s: "down", j: "attack" };
+  if (keyMap[event.key])
+    socket.emit("keyPress", { inputId: keyMap[event.key], state: true });
+});
+
+window.addEventListener("keyup", (event) => {
+  const keyMap = { a: "left", d: "right", w: "up", s: "down" };
+  if (keyMap[event.key])
+    socket.emit("keyPress", { inputId: keyMap[event.key], state: false });
+});
