@@ -68,9 +68,12 @@
       })
 
       socket.on("newAttack", function(data) {
+        data.forEach((attackData) => {
+        const { attack } = attackData;
         ctx.fillStyle = "red"; // Cambia el color del ataque
-        ctx.fillRect(data.x, data.y-150, data.width, data.height);
-      }); 
+        ctx.fillRect(attack.x, attack.y, attack.width, attack.height);
+        });
+      });
       
       
       window.addEventListener("keydown",(event)=>{

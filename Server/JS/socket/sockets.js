@@ -23,9 +23,16 @@ module.exports = (io) => {
       Player.KeyPress(data);
     });
 
-    socket.on("attack", (data) => {
-      const attackData = Player.atack(data.id);
-      io.sockets.emit("newAttack", attackData); // Emite a todos los jugadores
+    socket.on("attack", () => {
+      const attackData = [];
+      for (let otherId in playerList) {
+        if (socket.id !== otherId) {
+          const otherPlayer = playerList[otherId];
+          const attack = Player.atack(otherPlayer);
+          attackData.push({ attack, target: otherPlayer.id });
+        }
+      }
+      io.sockets.emit("newAttack", attackData);
     });
 
     console.log(`socket connection ${socket.id}`);

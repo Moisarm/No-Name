@@ -21,5 +21,5 @@ app.use("/", express.static("./node_modules/phaser/dist"));
 // Inicializar el socket
 socketManager(io);
 
-console.log("Se inicia el servidor");
+console.log("Se inicia el servidor en el puerto 2000");
 serv.listen(2000);

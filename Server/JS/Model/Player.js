@@ -89,14 +89,41 @@ class Player {
     }
   }
 
-  atack(id) {
-    this.atackBox[id] = {
-      x: this.x + 50, // Posición del ataque
+  atack(targetPlayer) {
+    const attackBox = {
+      x: this.x + (this.x < targetPlayer.x ? 50 : -150), // Direcciona el ataque hacia el oponente
       y: this.y,
-      width: 100, // Ajusta el tamaño del ataque
+      width: 100,
       height: 50,
     };
-    return this.atackBox[id];
+
+    const isHit = this.checkAttackCollision(attackBox, targetPlayer);
+    if (isHit) {
+      this.applyPush(targetPlayer, attackBox); // Aplica el empuje al oponente
+    }
+
+    return attackBox;
+  }
+
+  checkAttackCollision(attackBox, targetPlayer) {
+    const xOverlap =
+      attackBox.x < targetPlayer.x + 50 &&
+      attackBox.x + attackBox.width > targetPlayer.x;
+    const yOverlap =
+      attackBox.y < targetPlayer.y + 50 &&
+      attackBox.y + attackBox.height > targetPlayer.y;
+    return xOverlap && yOverlap;
+  }
+
+  applyPush(targetPlayer, attackBox) {
+    const pushStrength = 20; // Ajusta este valor según la fuerza del empuje
+    const dx = targetPlayer.x - this.x;
+
+    if (dx > 0) {
+      targetPlayer.x += pushStrength; // Empuje hacia la derecha
+    } else {
+      targetPlayer.x -= pushStrength; // Empuje hacia la izquierda
+    }
   }
 
   checkCollision(otherPlayer) {
